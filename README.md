@@ -17,7 +17,7 @@ API - https://docs.poloniex.com/#price-aggregated-book
 Надо подписаться на данные пары(в их API они перевёрнутые, например USDT_BTC)
 
 На выходе(лог в консоль) должна быть структура:
-~~~json
+~~~text
 type RecentTrade struct {
     Id        string    // ID транзакции
     Pair      string    // Торговая пара (из списка выше)
@@ -27,3 +27,14 @@ type RecentTrade struct {
     Timestamp time.Time // Время транзакции
 }
 ~~~
+
+## Запуск
+~~~cmd
+GoPoloniexTest key secret
+~~~
+
+Команды:
+* -h (помощь)
+* -v (версия программы)
+
+![image](https://github.com/DFofanov/GoPoloniexTest/blob/main/img/cmd.png?raw=true)
