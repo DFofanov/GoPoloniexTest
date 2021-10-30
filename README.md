@@ -37,4 +37,7 @@ GoPoloniexTest key secret
 * -h (помощь)
 * -v (версия программы)
 
-![image](https://github.com/DFofanov/GoPoloniexTest/blob/main/img/cmd.png?raw=true)
+![image](https://github.com/DFofanov/GoPoloniexTest/blob/main/img/output.png?raw=true)
+
+## License
+Licensed under the GPL-3.0 License.
