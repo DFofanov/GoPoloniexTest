@@ -30,7 +30,7 @@ type RecentTrade struct {
 
 ## Запуск
 ~~~cmd
-GoPoloniexTest key secret
+GoPoloniexTest configFile
 ~~~
 
 Команды:

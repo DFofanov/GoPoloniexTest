@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"math"
 	"net/http"
@@ -23,12 +24,16 @@ type (
 		ws            recws.RecConn
 		subscriptions map[string]string
 	}
+)
 
+type (
 	Subscription struct {
 		Command string `json:"command"`
 		Channel string `json:"channel"`
 	}
+)
 
+type (
 	RecentTrade struct {
 		ID        int64
 		Pair      string
@@ -40,9 +45,31 @@ type (
 	}
 )
 
+type Config struct {
+	Key    string `json:"key"`
+	Secret string `json:"secret"`
+}
+
 const (
 	POLONIEX_URL = "wss://api2.poloniex.com/"
 )
+
+func readConfig(path string) (*Config, error) {
+	data, err := ioutil.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+	var config Config
+	err = json.Unmarshal(data, &config)
+	if err != nil {
+		return nil, err
+	}
+	return &config, nil
+}
+
+func GetConfig(path string) (*Config, error) {
+	return readConfig(path)
+}
 
 func toString(i interface{}) string {
 	switch i := i.(type) {
@@ -166,12 +193,11 @@ func PrintUsage() {
 }
 
 func main() {
-
 	goopt.Author = "Dmitry Fofanov"
 	goopt.Version = "0.1"
 	goopt.Summary = "The task of obtaining data on completed transactions from the Poloniex exchange using Websocket"
 	goopt.Usage = func() string {
-		return fmt.Sprintf("Usage:\t%s key secret\n or:\t%s OPTION\n", os.Args[0], os.Args[0]) + goopt.Summary + "\n\n" + goopt.Help()
+		return fmt.Sprintf("Usage:\t%s configFile\n or:\t%s OPTION\n", os.Args[0], os.Args[0]) + goopt.Summary + "\n\n" + goopt.Help()
 	}
 	goopt.Description = func() string {
 		return goopt.Summary + "\n\nUnless an option is passed to it."
@@ -181,6 +207,6 @@ func main() {
 	if len(goopt.Args) != 2 {
 		PrintUsage()
 	}
-
-	GoPoloniexTest(goopt.Args[0], goopt.Args[1])
+	config, _ := GetConfig(goopt.Args[0])
+	GoPoloniexTest(config.Key, config.Secret)
 }
